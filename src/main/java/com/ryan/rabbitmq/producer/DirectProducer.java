@@ -1,6 +1,5 @@
-package com.ryan.batchconsumer.producer;
+package com.ryan.rabbitmq.producer;
 
-import com.ryan.batchconsumer.message.DirectMessage;
 import com.ryan.rabbitmq.message.DemoMessage;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,27 +8,27 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 
+
 @Component
-public class DirectBatchConsumerProducer {
+public class DirectProducer {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    /**
-     * 同步发送消息
-     *
-     * @param id
-     */
     public void syncSend(Integer id) {
-        DirectMessage demoMessage = new DirectMessage();
-        demoMessage.setId(id);
-        rabbitTemplate.convertAndSend(DirectMessage.EXCHANGE, DirectMessage.ROUTING_KEY, demoMessage);
+        // 创建 Demo01Message 消息
+        DemoMessage message = new DemoMessage();
+        message.setId(id);
+        // 同步发送消息
+        rabbitTemplate.convertAndSend(DemoMessage.EXCHANGE, DemoMessage.ROUTING_KEY, message);
     }
 
     public void syncSendDefault(Integer id) {
-        DirectMessage demoMessage = new DirectMessage();
-        demoMessage.setId(id);
-        rabbitTemplate.convertAndSend(DirectMessage.QUEUE, demoMessage);
+        // 创建 Demo01Message 消息
+        DemoMessage message = new DemoMessage();
+        message.setId(id);
+        // 同步发送消息
+        rabbitTemplate.convertAndSend(DemoMessage.QUEUE, message);
     }
 
     @Async

@@ -1,7 +1,7 @@
 package com.ryan.rabbitmq.config;
 
+import com.ryan.rabbitmq.batchrabbitmq.message.DirectPushMessage;
 import com.ryan.rabbitmq.message.DemoMessage;
-import com.ryan.rabbitmq.message.FanoutMessage;
 import com.ryan.rabbitmq.message.HeaderMessage;
 import com.ryan.rabbitmq.message.TopicMessage;
 import org.springframework.amqp.core.*;
@@ -86,47 +86,47 @@ public class RabbitConfig {
     /**
      * fanout Exchange 示例的配置类
      */
-    public static class FanoutExchangeDemoConfiguration {
-        // 创建 QueueA
-        @Bean
-        public Queue demo03QueueA() {
-            return new Queue(FanoutMessage.QUEUEA, // Queue 名字
-                    true, // durable: 是否持久化
-                    false, // exclusive: 是否排它
-                    false); // autoDelete: 是否自动删除
-        }
-
-        // 创建 QueueA
-        @Bean
-        public Queue demo03QueueB() {
-            return new Queue(FanoutMessage.QUEUEB, // Queue 名字
-                    true, // durable: 是否持久化
-                    false, // exclusive: 是否排它
-                    false); // autoDelete: 是否自动删除
-        }
-
-        // 创建 Topic Exchange
-        @Bean
-        public FanoutExchange demo03Exchange() {
-            return new FanoutExchange(FanoutMessage.EXCHANGE,
-                    true,  // durable: 是否持久化
-                    false);  // exclusive: 是否排它
-        }
-
-        // 创建 Binding
-        // Exchange：Demo02Message.EXCHANGE
-        // Routing key：Demo02Message.ROUTING_KEY
-        // Queue：Demo02Message.QUEUE
-        @Bean
-        public Binding demo03BindingA() {
-            return BindingBuilder.bind(demo03QueueA()).to(demo03Exchange());
-        }
-
-        @Bean
-        public Binding demo03BindingB() {
-            return BindingBuilder.bind(demo03QueueB()).to(demo03Exchange());
-        }
-    }
+//    public static class FanoutExchangeDemoConfiguration {
+//        // 创建 QueueA
+//        @Bean
+//        public Queue demo03QueueA() {
+//            return new Queue(FanoutMessage.QUEUEA, // Queue 名字
+//                    true, // durable: 是否持久化
+//                    false, // exclusive: 是否排它
+//                    false); // autoDelete: 是否自动删除
+//        }
+//
+//        // 创建 QueueA
+//        @Bean
+//        public Queue demo03QueueB() {
+//            return new Queue(FanoutMessage.QUEUEB, // Queue 名字
+//                    true, // durable: 是否持久化
+//                    false, // exclusive: 是否排它
+//                    false); // autoDelete: 是否自动删除
+//        }
+//
+//        // 创建 Topic Exchange
+//        @Bean
+//        public FanoutExchange demo03Exchange() {
+//            return new FanoutExchange(FanoutMessage.EXCHANGE,
+//                    true,  // durable: 是否持久化
+//                    false);  // exclusive: 是否排它
+//        }
+//
+//        // 创建 Binding
+//        // Exchange：Demo02Message.EXCHANGE
+//        // Routing key：Demo02Message.ROUTING_KEY
+//        // Queue：Demo02Message.QUEUE
+//        @Bean
+//        public Binding demo03BindingA() {
+//            return BindingBuilder.bind(demo03QueueA()).to(demo03Exchange());
+//        }
+//
+//        @Bean
+//        public Binding demo03BindingB() {
+//            return BindingBuilder.bind(demo03QueueB()).to(demo03Exchange());
+//        }
+//    }
 
 
     /**
@@ -167,17 +167,57 @@ public class RabbitConfig {
      * @param connectionFactory
      * @return
      */
-    @Bean
-    public BatchingRabbitTemplate batchingRabbitTemplate(ConnectionFactory connectionFactory) {
-        int batchSize = 10;
-        int bufferLimit = 2048;
-        int timeout = 20000;
-        SimpleBatchingStrategy simpleBatchingStrategy = new SimpleBatchingStrategy(batchSize, bufferLimit, timeout);
-        ConcurrentTaskScheduler concurrentTaskScheduler = new ConcurrentTaskScheduler();
-        BatchingRabbitTemplate batchingRabbitTemplate = new BatchingRabbitTemplate(simpleBatchingStrategy, concurrentTaskScheduler);
-        batchingRabbitTemplate.setConnectionFactory(connectionFactory);
-        return batchingRabbitTemplate;
+    public static class batchPushConfiguration {
+
+//        @Bean
+//        public Queue batchPushQueue() {
+//            return new Queue(DirectPushMessage.QUEUE, // Queue 名字
+//                    true, // durable: 是否持久化
+//                    false, // exclusive: 是否排它
+//                    false); // autoDelete: 是否自动删除
+//        }
+//
+//        // 创建 Direct Exchange
+//        @Bean
+//        public DirectExchange batchPushExchange() {
+//            return new DirectExchange(DirectPushMessage.EXCHANGE,
+//                    true,  // durable: 是否持久化
+//                    false);  // exclusive: 是否排它
+//        }
+//
+//        // 创建 Binding
+//        // Exchange：DemoMessage.EXCHANGE
+//        // Routing key：DemoMessage.ROUTING_KEY
+//        // Queue：DemoMessage.QUEUE
+//        @Bean
+//        public Binding batchPushBinding() {
+//            return BindingBuilder.bind(batchPushQueue()).to(batchPushExchange()).with(DirectPushMessage.ROUTING_KEY);
+//        }
+
+//        @Bean
+//        public BatchingRabbitTemplate batchingRabbitTemplate(ConnectionFactory connectionFactory) {
+//            int batchSize = 10;
+//            int bufferLimit = 2048;
+//            int timeout = 20000;
+//            SimpleBatchingStrategy simpleBatchingStrategy = new SimpleBatchingStrategy(batchSize, bufferLimit, timeout);
+//            ConcurrentTaskScheduler concurrentTaskScheduler = new ConcurrentTaskScheduler();
+//            BatchingRabbitTemplate batchingRabbitTemplate = new BatchingRabbitTemplate(simpleBatchingStrategy, concurrentTaskScheduler);
+//            batchingRabbitTemplate.setConnectionFactory(connectionFactory);
+//            return batchingRabbitTemplate;
+//        }
+
+//        @Bean(name = "consumerBatchContainerFactory")
+//        public SimpleRabbitListenerContainerFactory consumerBatchContainerFactory(
+//                SimpleRabbitListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+//            // 创建 SimpleRabbitListenerContainerFactory 对象
+//            SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+//            configurer.configure(factory, connectionFactory);
+//            // <X> 额外添加批量消费的属性
+//            factory.setBatchListener(true);
+//            return factory;
+//        }
     }
+
 
 
     /**
@@ -187,14 +227,47 @@ public class RabbitConfig {
      * @param connectionFactory
      * @return
      */
-    @Bean(name = "consumerBatchContainerFactory")
-    public SimpleRabbitListenerContainerFactory consumerBatchContainerFactory(
-            SimpleRabbitListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
-        // 创建 SimpleRabbitListenerContainerFactory 对象
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        configurer.configure(factory, connectionFactory);
-        // <X> 额外添加批量消费的属性
-        factory.setBatchListener(true);
-        return factory;
+    public static class batchConsumerConfiguration {
+
+//        @Bean
+//        public Queue batchPushQueue() {
+//            return new Queue(DirectPushMessage.QUEUE, // Queue 名字
+//                    true, // durable: 是否持久化
+//                    false, // exclusive: 是否排它
+//                    false); // autoDelete: 是否自动删除
+//        }
+//
+//        // 创建 Direct Exchange
+//        @Bean
+//        public DirectExchange batchPushExchange() {
+//            return new DirectExchange(DirectPushMessage.EXCHANGE,
+//                    true,  // durable: 是否持久化
+//                    false);  // exclusive: 是否排它
+//        }
+//
+//        // 创建 Binding
+//        // Exchange：DemoMessage.EXCHANGE
+//        // Routing key：DemoMessage.ROUTING_KEY
+//        // Queue：DemoMessage.QUEUE
+//        @Bean
+//        public Binding batchPushBinding() {
+//            return BindingBuilder.bind(batchPushQueue()).to(batchPushExchange()).with(DirectPushMessage.ROUTING_KEY);
+//        }
+//
+//        @Bean(name = "consumerBatchContainerFactory")
+//        public SimpleRabbitListenerContainerFactory consumerBatchContainerFactory(
+//                SimpleRabbitListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+//            // 创建 SimpleRabbitListenerContainerFactory 对象
+//            SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+//            configurer.configure(factory, connectionFactory);
+//            // <X> 额外添加批量消费的属性
+//            factory.setBatchListener(true);
+//
+//            // 批量消费消息方式二配置
+//            factory.setBatchSize(10);
+//            factory.setReceiveTimeout(10 * 1000L);
+//            factory.setConsumerBatchEnabled(true);
+//            return factory;
+//        }
     }
 }
